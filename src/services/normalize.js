@@ -14,12 +14,12 @@ function contact(record) {
 }
 
 function payment(record) {
-  return base("payments", record.id || record.transaction_id, "payment", record, {
-    name: record.customer_name || record.customer?.name || null,
+  return base("payments", record.id || record.transaction_id || record.transactionId || record._id, "payment", record, {
+    name: record.customer_name || record.customer?.name || record.userId || null,
     email: record.customer_email || record.customer?.email || null,
-    amount: Number(record.amount ?? record.amount_cents / 100),
+    amount: Number(record.amount ?? (record.amount_cents ? record.amount_cents / 100 : 0)),
     currency: record.currency || null,
-    updated_at: iso(record.updated_at || record.updatedAt || record.created_at),
+    updated_at: iso(record.updated_at || record.updatedAt || record.created_at || record.createdAt),
   });
 }
 
